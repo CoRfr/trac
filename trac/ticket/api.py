@@ -384,7 +384,10 @@ class TicketSystem(Component):
                 'value': config.get(name + '.value', '')
             }
             if field['type'] == 'select' or field['type'] == 'radio':
-                field['options'] = config.getlist(name + '.options', sep='|')
+                if config.get(name + ".options") == "$userlist": 
+                    self.eventually_restrict_owner(field, None) 
+                else:
+                    field['options'] = config.getlist(name + '.options', sep='|')
                 if '' in field['options']:
                     field['optional'] = True
                     field['options'].remove('')
